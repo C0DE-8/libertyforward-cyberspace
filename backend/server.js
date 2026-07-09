@@ -3,7 +3,7 @@ import cors from 'cors'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
 import { v4 as uuidv4 } from 'uuid'
-import pool from './db/pool.js'
+import db from './db.js'
 
 dotenv.config()
 
@@ -52,7 +52,7 @@ function mapTier(row) {
 
 async function getPortalSettings() {
   try {
-    const [rows] = await pool.query(
+    const rows = await db.query(
       `SELECT setting_key, setting_value FROM portal_settings
        WHERE setting_key IN ('telegram_officer_url')`,
     )
@@ -129,17 +129,17 @@ function mapCase(row) {
 
 app.get('/api/health', async (_req, res) => {
   try {
-    await pool.query('SELECT 1')
-    res.json({ ok: true, database: 'connected' })
+    const status = await db.status()
+    res.json({ ok: true, gateway: status })
   } catch (error) {
-    res.status(503).json({ ok: false, message: error.message })
+    res.status(503).json({ ok: false, error: error.message })
   }
 })
 
 app.get('/api/settings', async (_req, res) => {
   try {
-    const [wallets] = await pool.query('SELECT * FROM treasury_wallets ORDER BY id')
-    const [tiers] = await pool.query('SELECT * FROM service_tiers ORDER BY level')
+    const wallets = await db.query('SELECT * FROM treasury_wallets ORDER BY id')
+    const tiers = await db.query('SELECT * FROM service_tiers ORDER BY level')
     const portal = await getPortalSettings()
     res.json({
       ok: true,
@@ -158,7 +158,7 @@ app.post('/api/cases', async (req, res) => {
     const id = uuidv4()
     const reference = `LFC-${Date.now().toString().slice(-6)}`
 
-    await pool.execute(
+    await db.execute(
       `INSERT INTO recovery_cases (
         id, reference, name, email, phone, contact, country, state_region, city,
         scam_type, scam_platform, contact_method, locked_location, asset, network,
@@ -168,53 +168,53 @@ app.post('/api/cases', async (req, res) => {
         payment_wallet_key, payment_wallet_name, payment_wallet_address,
         paying_from, payment_asset, fee_speed
       ) VALUES (
-        :id, :reference, :name, :email, :phone, :contact, :country, :stateRegion, :city,
-        :scamType, :scamPlatform, :contactMethod, :lockedLocation, :asset, :network,
-        :lockedAmount, :totalLostUSD, :incidentDate, :walletAddress, :scammerAddress,
-        :transactionProof, :exchangeInvolved, :policeReport, :scamDetails,
-        :tierId, :tierName, :tierLevel, :feeAmount,
-        :paymentWallet, :paymentWalletName, :paymentWalletAddress,
-        :payingFrom, :paymentAsset, :feeSpeed
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?,
+        ?, ?, ?, ?,
+        ?, ?, ?, ?,
+        ?, ?, ?,
+        ?, ?, ?
       )`,
-      {
+      [
         id,
         reference,
-        name: body.name,
-        email: body.email,
-        phone: body.phone || null,
-        contact: body.contact || null,
-        country: body.country,
-        stateRegion: body.stateRegion || null,
-        city: body.city || null,
-        scamType: body.scamType,
-        scamPlatform: body.scamPlatform,
-        contactMethod: body.contactMethod,
-        lockedLocation: body.lockedLocation,
-        asset: body.asset,
-        network: body.network,
-        lockedAmount: body.lockedAmount,
-        totalLostUSD: body.totalLostUSD,
-        incidentDate: body.incidentDate,
-        walletAddress: body.walletAddress,
-        scammerAddress: body.scammerAddress || null,
-        transactionProof: body.transactionProof,
-        exchangeInvolved: body.exchangeInvolved || null,
-        policeReport: body.policeReport,
-        scamDetails: body.scamDetails || null,
-        tierId: body.tierId,
-        tierName: body.tierName,
-        tierLevel: body.tierLevel,
-        feeAmount: body.feeAmount,
-        paymentWallet: body.paymentWallet,
-        paymentWalletName: body.paymentWalletName,
-        paymentWalletAddress: body.paymentWalletAddress,
-        payingFrom: body.payingFrom || null,
-        paymentAsset: body.paymentAsset || null,
-        feeSpeed: body.feeSpeed || null,
-      },
+        body.name,
+        body.email,
+        body.phone || null,
+        body.contact || null,
+        body.country,
+        body.stateRegion || null,
+        body.city || null,
+        body.scamType,
+        body.scamPlatform,
+        body.contactMethod,
+        body.lockedLocation,
+        body.asset,
+        body.network,
+        body.lockedAmount,
+        body.totalLostUSD,
+        body.incidentDate,
+        body.walletAddress,
+        body.scammerAddress || null,
+        body.transactionProof,
+        body.exchangeInvolved || null,
+        body.policeReport,
+        body.scamDetails || null,
+        body.tierId,
+        body.tierName,
+        body.tierLevel,
+        body.feeAmount,
+        body.paymentWallet,
+        body.paymentWalletName,
+        body.paymentWalletAddress,
+        body.payingFrom || null,
+        body.paymentAsset || null,
+        body.feeSpeed || null,
+      ],
     )
 
-    const [rows] = await pool.query('SELECT * FROM recovery_cases WHERE id = ?', [id])
+    const rows = await db.query('SELECT * FROM recovery_cases WHERE id = ?', [id])
     res.status(201).json({ ok: true, record: mapCase(rows[0]) })
   } catch (error) {
     res.status(500).json({ ok: false, message: error.message })
@@ -223,7 +223,7 @@ app.post('/api/cases', async (req, res) => {
 
 app.get('/api/cases/:reference', async (req, res) => {
   try {
-    const [rows] = await pool.query(
+    const rows = await db.query(
       'SELECT * FROM recovery_cases WHERE reference = ?',
       [req.params.reference],
     )
@@ -246,7 +246,7 @@ app.post('/api/cases/:reference/payment', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Transaction hash is required' })
     }
 
-    const [rows] = await pool.query(
+    const rows = await db.query(
       'SELECT * FROM recovery_cases WHERE reference = ?',
       [req.params.reference],
     )
@@ -261,7 +261,7 @@ app.post('/api/cases/:reference/payment', async (req, res) => {
       return res.json({ ok: true, record: mapCase(current), message: 'Payment already confirmed' })
     }
 
-    await pool.execute(
+    await db.execute(
       `UPDATE recovery_cases
        SET payment_status = 'submitted',
            payment_tx_hash = ?,
@@ -271,7 +271,7 @@ app.post('/api/cases/:reference/payment', async (req, res) => {
       [paymentTxHash.trim(), payingFrom || null, req.params.reference],
     )
 
-    const [updated] = await pool.query(
+    const updated = await db.query(
       'SELECT * FROM recovery_cases WHERE reference = ?',
       [req.params.reference],
     )
@@ -289,7 +289,7 @@ app.post('/api/cases/:reference/payment', async (req, res) => {
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body
-    const [rows] = await pool.query('SELECT * FROM admin_users WHERE email = ?', [email])
+    const rows = await db.query('SELECT * FROM admin_users WHERE email = ?', [email])
 
     if (!rows.length) {
       return res.status(401).json({ ok: false, message: 'Invalid admin login' })
@@ -309,7 +309,7 @@ app.post('/api/admin/login', async (req, res) => {
 
 app.get('/api/admin/cases', requireAdmin, async (_req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM recovery_cases ORDER BY created_at DESC')
+    const rows = await db.query('SELECT * FROM recovery_cases ORDER BY created_at DESC')
     res.json({ ok: true, records: rows.map(mapCase) })
   } catch (error) {
     res.status(500).json({ ok: false, message: error.message })
@@ -325,7 +325,7 @@ app.patch('/api/admin/cases/:id/payment-status', requireAdmin, async (req, res) 
       return res.status(400).json({ ok: false, message: 'Invalid payment status' })
     }
 
-    await pool.execute(
+    await db.execute(
       `UPDATE recovery_cases
        SET payment_status = ?,
            paid_at = CASE
@@ -360,7 +360,7 @@ app.patch('/api/admin/cases/:id/payment-status', requireAdmin, async (req, res) 
       ],
     )
 
-    const [rows] = await pool.query('SELECT * FROM recovery_cases WHERE id = ?', [req.params.id])
+    const rows = await db.query('SELECT * FROM recovery_cases WHERE id = ?', [req.params.id])
 
     if (!rows.length) {
       return res.status(404).json({ ok: false, message: 'Case not found' })
@@ -381,7 +381,7 @@ app.patch('/api/admin/cases/:id/payment-details', requireAdmin, async (req, res)
       return res.status(400).json({ ok: false, message: 'Payment TXID or paying-from address is required' })
     }
 
-    await pool.execute(
+    await db.execute(
       `UPDATE recovery_cases
        SET payment_tx_hash = COALESCE(?, payment_tx_hash),
            paying_from = COALESCE(?, paying_from),
@@ -393,7 +393,7 @@ app.patch('/api/admin/cases/:id/payment-details', requireAdmin, async (req, res)
       [paymentTxHash, payingFrom, paymentTxHash, req.params.id],
     )
 
-    const [rows] = await pool.query('SELECT * FROM recovery_cases WHERE id = ?', [req.params.id])
+    const rows = await db.query('SELECT * FROM recovery_cases WHERE id = ?', [req.params.id])
 
     if (!rows.length) {
       return res.status(404).json({ ok: false, message: 'Case not found' })
@@ -407,11 +407,13 @@ app.patch('/api/admin/cases/:id/payment-details', requireAdmin, async (req, res)
 
 app.delete('/api/admin/cases/:id', requireAdmin, async (req, res) => {
   try {
-    const [result] = await pool.execute('DELETE FROM recovery_cases WHERE id = ?', [req.params.id])
+    const rows = await db.query('SELECT id FROM recovery_cases WHERE id = ?', [req.params.id])
 
-    if (result.affectedRows === 0) {
+    if (!rows.length) {
       return res.status(404).json({ ok: false, message: 'Case not found' })
     }
+
+    await db.execute('DELETE FROM recovery_cases WHERE id = ?', [req.params.id])
 
     res.json({ ok: true })
   } catch (error) {
@@ -423,14 +425,14 @@ app.put('/api/admin/wallets/:key', requireAdmin, async (req, res) => {
   try {
     const { name, asset, network, address } = req.body
 
-    await pool.execute(
+    await db.execute(
       `UPDATE treasury_wallets
        SET name = ?, asset = ?, network = ?, address = ?
        WHERE wallet_key = ?`,
       [name, asset, network, address, req.params.key],
     )
 
-    const [rows] = await pool.query('SELECT * FROM treasury_wallets WHERE wallet_key = ?', [req.params.key])
+    const rows = await db.query('SELECT * FROM treasury_wallets WHERE wallet_key = ?', [req.params.key])
     res.json({ ok: true, wallet: mapWallet(rows[0]) })
   } catch (error) {
     res.status(500).json({ ok: false, message: error.message })
@@ -441,14 +443,14 @@ app.put('/api/admin/tiers/:key', requireAdmin, async (req, res) => {
   try {
     const { name, fee, description } = req.body
 
-    await pool.execute(
+    await db.execute(
       `UPDATE service_tiers
        SET name = ?, fee = ?, description = ?
        WHERE tier_key = ?`,
       [name, fee, description, req.params.key],
     )
 
-    const [rows] = await pool.query('SELECT * FROM service_tiers WHERE tier_key = ?', [req.params.key])
+    const rows = await db.query('SELECT * FROM service_tiers WHERE tier_key = ?', [req.params.key])
     res.json({ ok: true, tier: mapTier(rows[0]) })
   } catch (error) {
     res.status(500).json({ ok: false, message: error.message })
@@ -459,7 +461,7 @@ app.put('/api/admin/portal-settings', requireAdmin, async (req, res) => {
   try {
     const telegramUrl = normalizeTelegramUrl(req.body.telegramUrl)
 
-    await pool.execute(
+    await db.execute(
       `INSERT INTO portal_settings (setting_key, setting_value)
        VALUES ('telegram_officer_url', ?)
        ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)`,

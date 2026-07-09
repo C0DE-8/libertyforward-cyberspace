@@ -1,67 +1,54 @@
 # Liberty Forward Cyberspace
 
-## Quick start (Docker MySQL — recommended)
+## Quick Start
 
-Run these from the **project root** (`wallet-unlock-main`), one command per line:
+Configure the backend gateway environment in `backend/.env`:
+
+```bash
+SITE_ID=your_project_site_id
+API_KEY=full_dbms_api_key_not_the_short_prefix
+DBMS_URL=https://api.dbms.copupbid.com/api
+DBMS_TIMEOUT_MS=15000
+```
+
+Install dependencies:
 
 ```bash
 cd backend && npm install && cd ../frontend && npm install && cd ..
-docker compose up -d
-sleep 10
+```
+
+Create tables and seed defaults through the DBMS Gateway:
+
+```bash
 npm run db:setup
 ```
 
 Terminal 1:
+
 ```bash
 npm run api
 ```
 
 Terminal 2:
+
 ```bash
 npm run frontend
 ```
 
 Open http://localhost:5173
 
----
-
-## What went wrong before
-
-1. **`Access denied for user 'root'`** — `backend/.env` still had the placeholder password `your_password`. It is now set to `lfc_root_2024` to match Docker.
-
-2. **`Missing script: "api"`** — You ran `npm run api` from inside the `backend/` folder. That script lives in the **root** `package.json`. From `backend/`, use `npm run dev` instead.
-
-3. **MySQL not installed** — This project uses Docker for MySQL. Run `docker compose up -d` first.
-
----
-
-## Admin login
+## Admin Login
 
 - URL: http://localhost:5173/admin
 - Email: `admin@libertyforward.gov`
 - Password: `liberty2024`
 
----
-
-## Using your own MySQL (no Docker)
-
-Edit `backend/.env` with your real credentials, then:
-
-```bash
-npm run db:setup
-npm run api
-```
-
----
-
-## Scripts (run from project root)
+## Scripts
 
 | Command | What it does |
 |---------|--------------|
-| `npm run db:up` | Start MySQL in Docker |
-| `npm run db:setup` | Create tables and seed data |
+| `npm run db:setup` | Create tables and seed data through the DBMS Gateway |
 | `npm run api` | Start backend on :8787 |
-| `npm run frontend` | Start frontend on :5177 |
+| `npm run frontend` | Start frontend dev server |
 
-From inside `backend/` folder use `npm run dev` instead of `npm run api`.
-# libertyforward-cyberspace
+From inside `backend/`, use `npm run dev` instead of `npm run api`.

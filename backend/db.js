@@ -1,0 +1,12 @@
+import dotenv from 'dotenv'
+import { connectProject } from './diamond-sql.js'
+
+dotenv.config()
+
+const db = connectProject(process.env.SITE_ID, {
+  apiKey: process.env.API_KEY,
+  dbmsUrl: process.env.DBMS_URL,
+  timeoutMs: process.env.DBMS_TIMEOUT_MS || 15000,
+})
+
+export default db

@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import bcrypt from 'bcryptjs'
-import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
+import db from '../db.js'
 
 dotenv.config()
 
@@ -34,29 +34,17 @@ async function setup() {
   const statements = schema
     .split(';')
     .map((s) => s.trim())
-    .filter(Boolean)
-
-  const bootstrap = await mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    multipleStatements: true,
-  })
+    .filter((statement) => {
+      return (
+        statement &&
+        !/^CREATE\s+DATABASE\b/i.test(statement) &&
+        !/^USE\b/i.test(statement)
+      )
+    })
 
   for (const statement of statements) {
-    await bootstrap.query(statement)
+    await db.execute(statement)
   }
-
-  await bootstrap.end()
-
-  const db = await mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'lfc_cyberspace',
-  })
 
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@libertyforward.gov'
   const adminPassword = process.env.ADMIN_PASSWORD || 'liberty2024'
@@ -93,21 +81,10 @@ async function setup() {
      ON DUPLICATE KEY UPDATE setting_key = setting_key`,
   )
 
-  await db.end()
-  console.log('Database setup complete.')
+  console.log('Gateway database setup complete.')
 }
 
 setup().catch((error) => {
-  if (error.code === 'ER_ACCESS_DENIED_ERROR') {
-    console.error('\nDatabase setup failed: MySQL login rejected.')
-    console.error('Update DB_USER and DB_PASSWORD in backend/.env')
-    console.error('If using Docker: npm run db:up  (then wait ~10s and retry)\n')
-  } else if (error.code === 'ECONNREFUSED') {
-    console.error('\nDatabase setup failed: Cannot connect to MySQL.')
-    console.error('Start MySQL first:  npm run db:up')
-    console.error('Or install MySQL and update backend/.env\n')
-  } else {
-    console.error('Database setup failed:', error.message)
-  }
+  console.error('Gateway database setup failed:', error.message)
   process.exit(1)
 })
