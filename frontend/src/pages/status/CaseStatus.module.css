@@ -1,0 +1,341 @@
+.page {
+  width: min(760px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+
+.intro {
+  margin-bottom: 24px;
+}
+
+.kicker {
+  margin: 0 0 8px;
+  color: var(--lfc-gold);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0;
+  color: var(--lfc-navy);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.intro p {
+  margin: 10px 0 0;
+  color: var(--lfc-text-muted);
+}
+
+.lookupForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 18px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.lookupForm label {
+  display: grid;
+  gap: 8px;
+  color: var(--lfc-text);
+  font-weight: 700;
+}
+
+.lookupForm input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 12px;
+  padding: 0 14px;
+  background: var(--lfc-cream);
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.lookupForm button {
+  align-self: end;
+  min-height: 48px;
+  border: 2px solid var(--lfc-gold);
+  border-radius: 999px;
+  padding: 0 22px;
+  color: #ffffff;
+  background: var(--lfc-navy);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.lookupForm button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.error {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--lfc-danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  font-weight: 700;
+}
+
+.statusCard {
+  border: 1px solid var(--lfc-border);
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(10, 22, 40, 0.06);
+}
+
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, var(--lfc-navy), var(--lfc-navy-mid));
+  color: #ffffff;
+}
+
+.ref {
+  color: var(--lfc-gold-light);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.statusHeader h2 {
+  margin: 6px 0 0;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.statusHeader p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.86rem;
+}
+
+.statusPill {
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pill_pending { color: #92400e; background: #fef3c7; }
+.pill_submitted { color: #1e40af; background: #dbeafe; }
+.pill_paid { color: #065f46; background: #d1fae5; }
+.pill_verified { color: #ffffff; background: var(--lfc-success); }
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 20px 24px;
+  display: grid;
+  gap: 0;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 14px;
+  padding-bottom: 18px;
+  position: relative;
+}
+
+.timelineItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background: var(--lfc-border);
+}
+
+.timelineDone:not(:last-child)::before {
+  background: var(--lfc-gold);
+}
+
+.timelineDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--lfc-border);
+  background: #ffffff;
+  margin-top: 2px;
+}
+
+.timelineDone .timelineDot {
+  border-color: var(--lfc-gold);
+  background: var(--lfc-gold-pale);
+}
+
+.timelineCurrent .timelineDot {
+  border-color: var(--lfc-navy);
+  background: var(--lfc-navy);
+  box-shadow: 0 0 0 4px rgba(10, 22, 40, 0.08);
+}
+
+.timelineItem strong {
+  display: block;
+  color: var(--lfc-navy);
+}
+
+.timelineItem p {
+  margin: 4px 0 0;
+  color: var(--lfc-text-muted);
+  font-size: 0.86rem;
+}
+
+.summaryGrid {
+  margin: 0;
+  padding: 0 24px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.summaryGrid div {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--lfc-cream);
+  border: 1px solid var(--lfc-border);
+}
+
+.summaryGrid dt {
+  color: var(--lfc-text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summaryGrid dd {
+  margin: 6px 0 0;
+  color: var(--lfc-text);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.fullRow {
+  grid-column: 1 / -1;
+}
+
+.fullRow code {
+  font-size: 0.82rem;
+  word-break: break-all;
+}
+
+.statusActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px 24px;
+  border-top: 1px solid var(--lfc-border);
+  background: #faf8f4;
+}
+
+.liveStatus {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.statusActionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.verifiedCta {
+  margin: 0 24px 20px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border: 1px solid #7dd3fc;
+  display: grid;
+  gap: 12px;
+}
+
+.verifiedCta strong {
+  color: var(--lfc-navy);
+  font-size: 1rem;
+}
+
+.verifiedCta p {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  line-height: 1.5;
+}
+
+.verifiedNote {
+  font-size: 0.84rem;
+  font-style: italic;
+}
+
+.refreshBtn,
+.primaryBtn {
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0 20px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refreshBtn {
+  border: 1px solid var(--lfc-border);
+  color: var(--lfc-navy);
+  background: #ffffff;
+}
+
+.primaryBtn {
+  border: 2px solid var(--lfc-gold);
+  color: #ffffff;
+  background: var(--lfc-navy);
+}
+
+@media (max-width: 640px) {
+  .lookupForm {
+    grid-template-columns: 1fr;
+  }
+
+  .lookupForm button {
+    width: 100%;
+  }
+
+  .statusHeader {
+    flex-direction: column;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statusActions {
+    flex-direction: column;
+  }
+
+  .refreshBtn,
+  .primaryBtn {
+    width: 100%;
+  }
+}

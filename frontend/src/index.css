@@ -1,0 +1,56 @@
+:root {
+  font-family:
+    "Source Sans 3", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #0f1c2e;
+  background: #f0ede6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --lfc-navy: #0a1628;
+  --lfc-navy-mid: #1a3a5c;
+  --lfc-navy-light: #2a5080;
+  --lfc-gold: #c9a227;
+  --lfc-gold-light: #e8c547;
+  --lfc-gold-pale: #f5ecd4;
+  --lfc-cream: #f4f1ea;
+  --lfc-cream-dark: #e8e4db;
+  --lfc-text: #0f1c2e;
+  --lfc-text-muted: #4a5568;
+  --lfc-border: #d4cfc4;
+  --lfc-cyber: #00b4a0;
+  --lfc-cyber-glow: rgba(0, 180, 160, 0.18);
+  --lfc-success: #1a7f5a;
+  --lfc-danger: #9b1c1c;
+  --lfc-warning: #b45309;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+  radial-gradient(ellipse at 20% 0%, rgba(26, 58, 92, 0.06), transparent 50%),
+  radial-gradient(ellipse at 80% 100%, rgba(201, 162, 39, 0.05), transparent 50%),
+  var(--lfc-cream);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+p {
+  line-height: 1.7;
+}

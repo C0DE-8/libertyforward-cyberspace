@@ -1,0 +1,379 @@
+.page {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 88px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.kicker {
+  margin: 0 0 10px;
+  color: var(--lfc-gold);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroCopy h1 {
+  margin: 0;
+  color: var(--lfc-navy);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  line-height: 1.12;
+}
+
+.lede {
+  margin: 14px 0 0;
+  color: var(--lfc-text-muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+.metaCard {
+  border: 1px solid var(--lfc-border);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 20px 22px;
+  box-shadow: 0 6px 24px rgba(10, 22, 40, 0.05);
+}
+
+.metaCard dl {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.metaCard dt {
+  color: var(--lfc-text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metaCard dd {
+  margin: 4px 0 0;
+  color: var(--lfc-navy);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  padding: 14px 18px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 12px;
+  background: var(--lfc-cream);
+}
+
+.toc span {
+  color: var(--lfc-navy);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.toc a {
+  color: var(--lfc-navy-mid);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--lfc-border);
+}
+
+.toc a:hover {
+  border-color: var(--lfc-gold);
+  background: var(--lfc-gold-pale);
+}
+
+.policySection {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--lfc-border);
+}
+
+.policySection:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.policySection h2 {
+  margin: 0 0 14px;
+  color: var(--lfc-navy);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+}
+
+.sectionLead {
+  margin: 0 0 18px;
+  color: var(--lfc-text-muted);
+  line-height: 1.6;
+  max-width: 72ch;
+}
+
+.prose {
+  display: grid;
+  gap: 14px;
+  max-width: 72ch;
+}
+
+.prose p {
+  margin: 0;
+  color: var(--lfc-text);
+  line-height: 1.7;
+}
+
+.notice {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-left: 4px solid var(--lfc-gold);
+  border-radius: 0 12px 12px 0;
+  background: #fffdf8;
+  border-top: 1px solid var(--lfc-border);
+  border-right: 1px solid var(--lfc-border);
+  border-bottom: 1px solid var(--lfc-border);
+}
+
+.notice strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--lfc-navy);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.notice p {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  line-height: 1.6;
+}
+
+.principleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.principleCard {
+  padding: 22px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.principleCard h3 {
+  margin: 0 0 10px;
+  color: var(--lfc-navy);
+  font-size: 1rem;
+}
+
+.principleCard p {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.officialList,
+.prohibitedList {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 10px;
+  max-width: 72ch;
+}
+
+.officialList li,
+.prohibitedList li {
+  color: var(--lfc-text);
+  line-height: 1.6;
+}
+
+.prohibitedList li {
+  color: #7f1d1d;
+}
+
+.stepList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.stepList li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 18px 20px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.stepList span {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--lfc-navy);
+  background: var(--lfc-gold-pale);
+  border: 2px solid var(--lfc-gold);
+  font-weight: 900;
+  font-size: 0.88rem;
+}
+
+.stepList strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--lfc-navy);
+}
+
+.stepList p {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+.reportingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.reportingCard {
+  padding: 20px;
+  border: 1px solid var(--lfc-border);
+  border-radius: 14px;
+  background: #ffffff;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.reportingCard h3 {
+  margin: 0;
+  color: var(--lfc-navy);
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.reportingCard p {
+  margin: 0;
+  color: var(--lfc-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.ctaBand {
+  margin-top: 40px;
+  padding: 28px;
+  border-radius: 18px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--lfc-navy-mid), var(--lfc-navy));
+  border: 2px solid var(--lfc-gold);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.ctaBand h2 {
+  margin: 0 0 8px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.35rem;
+}
+
+.ctaBand p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+  max-width: 52ch;
+  font-size: 0.92rem;
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  min-height: 46px;
+  border-radius: 999px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.primaryBtn {
+  color: var(--lfc-navy);
+  background: var(--lfc-gold-pale);
+  border: 2px solid var(--lfc-gold);
+}
+
+.secondaryBtn {
+  color: #ffffff;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .principleGrid,
+  .reportingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaBand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ctaActions {
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .stepList li {
+    grid-template-columns: 1fr;
+  }
+
+  .stepList span {
+    width: 40px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+}

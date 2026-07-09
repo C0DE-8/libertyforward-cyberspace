@@ -1,0 +1,19 @@
+{
+  "name": "lfc-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "api": "node --watch server.js",
+    "db:setup": "node db/setup.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "uuid": "^11.1.0"
+  }
+}
