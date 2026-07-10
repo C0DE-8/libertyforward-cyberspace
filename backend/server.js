@@ -146,12 +146,21 @@ function mapCase(row) {
   }
 }
 
+app.get('/', (_req, res) => {
+  res.json({ ok: true, message: 'Backend is running' })
+})
+
 app.get('/api/health', async (_req, res) => {
   try {
     const status = await db.status()
     res.json({ ok: true, gateway: status })
   } catch (error) {
-    res.status(503).json({ ok: false, error: error.message })
+    res.status(503).json({
+      ok: false,
+      error: error.message,
+      stage: 'database-health-check',
+      hint: 'Check SITE_ID, API_KEY, DBMS_URL, and the DBMS Gateway service.',
+    })
   }
 })
 
