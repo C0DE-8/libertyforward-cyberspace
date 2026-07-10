@@ -12,7 +12,14 @@ const port = Number(process.env.PORT || 8787)
 const adminEmail = process.env.ADMIN_EMAIL || 'admin@libertyforward.gov'
 const adminPassword = process.env.ADMIN_PASSWORD || 'liberty2024'
 
-app.use(cors())
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+)
+app.options('*', cors())
 app.use(express.json({ limit: '2mb' }))
 
 function createToken() {
