@@ -31,7 +31,7 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 )
-app.options('*', (_req, res) => res.sendStatus(204))
+app.options('/{*splat}', (_req, res) => res.sendStatus(204))
 app.use(express.json({ limit: '2mb' }))
 
 function createToken() {
